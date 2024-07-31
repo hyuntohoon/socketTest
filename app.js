@@ -72,18 +72,29 @@ function createRoom() {
 }
 
 function sendAnswer() {
+    // solve 객체를 Map 형식에 맞게 작성
+    const solveMap = {};
+    $(".solve").each(function() {
+        const key = parseInt($(this).data("key")); // data-key 속성을 사용하여 키를 가져옴
+        const value = parseInt($(this).val()); // 값을 가져옴
+        solveMap[key] = value;
+    });
+
+    // DTO에 맞게 solved 객체를 생성
     const solved = {
         problemId: parseInt($("#problemId").val()),
         userId: parseInt($("#userId").val()),
-        solve: {
-            1: parseInt($("#answer").val()) // 예시로 solve 객체에 값을 넣음
-        },
+        solve: solveMap,
         submitTime: parseInt($("#submitTime").val()),
-        roomId: $("#roomId").val()
+        roomId: $("#roomId").val(),
+        round: parseInt($("#round").val())
     };
+
+    // 콘솔에 출력 및 STOMP 클라이언트를 사용하여 메시지 전송
     console.log('Sending answer: ', JSON.stringify(solved));
     stompClient.send("/app/quiz/answer", {}, JSON.stringify(solved));
 }
+
 
 function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
