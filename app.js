@@ -9,7 +9,7 @@ function setConnected(connected) {
     } else {
         $("#conversation").hide();
     }
-    $("#greetings").html("");
+    $("#greetings").html(""); 
 }
 
 function connect() {
